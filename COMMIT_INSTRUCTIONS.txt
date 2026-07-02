@@ -1,0 +1,39 @@
+Instrucoes para revisar, comitar e publicar
+
+Diretorio do projeto:
+C:\Users\Matheus\Documents\Codex\saude-rede-financiamento-producao-sus
+
+1. Abrir no RStudio
+
+Abra o arquivo:
+rede-sus.Rproj
+
+2. Regerar o projeto pelo R
+
+No console do RStudio, rode:
+
+source("scripts/build_project.R")
+
+Isso recria:
+- figures/*.png
+- docs/rede_sus_dashboard.html
+- docs/relatorio.html
+- rede_financiamento_producao_sus.pdf
+
+3. Conferir o status
+
+No terminal:
+
+git status -sb
+
+4. Comitar
+
+git add -A
+git commit -m "Convert repository to R project workflow"
+
+5. Publicar no GitHub
+
+git push origin main
+
+Observacao:
+O arquivo .gitattributes marca HTML, GeoJSON, CSV, PNG e PDF como artefatos gerados para o GitHub Linguist nao classificar o repositorio como HTML.

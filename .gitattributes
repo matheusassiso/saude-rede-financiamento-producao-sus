@@ -1,0 +1,6 @@
+docs/*.html linguist-generated=true
+docs/data/*.geojson linguist-generated=true
+data/*.geojson linguist-generated=true
+data/*.csv linguist-generated=true
+figures/* linguist-generated=true
+*.pdf linguist-generated=true

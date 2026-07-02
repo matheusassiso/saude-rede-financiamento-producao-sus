@@ -1,120 +1,130 @@
 ---
 title: "Rede, Financiamento e Produção SUS em Mato Grosso do Sul"
 author: "Matheus Assis de Oliveira"
-date: "2026-07-02"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
 output:
   html_document:
     toc: true
-    toc_float: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
     number_sections: true
     theme: flatly
     highlight: tango
-    code_folding: hide
+    fig_caption: true
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 10,
+  fig.height = 6.5,
+  dpi = 150,
+  out.width = "100%"
+)
+
+source("R/code.R")
+municipios <- read_project_csv("data/municipios_rede_sus.csv")
+resumo <- read_project_csv("data/resumo_indicadores.csv")
+perfis <- read_project_csv("data/perfis_municipais.csv")
+```
 
 # Introdução
 
-Este repositório apresenta um projeto único de análise aplicada sobre rede assistencial, financiamento municipal e produção do SUS em Mato Grosso do Sul. A proposta não é empilhar estudos isolados, mas organizar cinco dimensões analíticas em uma sequência única: estrutura da rede, orçamento, atenção primária, produção ambulatorial e perfis municipais integrados.
+Este repositório é um **projeto R único** de análise aplicada sobre rede assistencial, financiamento municipal e produção do SUS em Mato Grosso do Sul. A proposta é organizar cinco dimensões analíticas em uma sequência única: estrutura da rede, orçamento, atenção primária, produção ambulatorial e perfis municipais integrados.
 
 A pergunta central é: **como estrutura assistencial, financiamento e produção do SUS se distribuem entre os municípios, e quais perfis territoriais aparecem quando essas dimensões são analisadas em conjunto?**
 
 # Motivação
 
-A análise isolada de bases públicas cria uma leitura fragmentada. Um município pode ter alta despesa per capita por escala populacional, produção ambulatorial concentrada por papel regional, ou estrutura física proporcionalmente elevada sem ser um polo populacional. A integração permite observar essas relações em uma linguagem útil para gestão, auditoria exploratória e portfólio profissional de análise de dados.
+A análise isolada de bases públicas cria uma leitura fragmentada. CNES mostra capacidade instalada; SIOPS mostra financiamento; SISAB e SIA/SUS mostram produção; a análise de agrupamentos mostra perfis territoriais. Integrar essas dimensões torna a leitura mais útil para um perfil profissional de analista de dados: menos relatório solto, mais fluxo analítico reproduzível.
 
 # Dados
 
-Foram integradas cinco dimensões: CNES, SIOPS, SISAB, SIA/SUS e matriz municipal de agrupamento. Todas foram reduzidas à unidade municipal para permitir comparação, cálculo de taxas e leitura geoespacial.
+```{r dados}
+knitr::kable(resumo, col.names = c("Indicador", "Resultado"))
+```
+
+Foram consolidados os seguintes blocos:
+
+- **Rede assistencial**: estabelecimentos, leitos SUS, equipamentos e vínculo SUS.
+- **Financiamento**: gasto per capita, composição do gasto e aplicação de recursos próprios.
+- **Atenção primária**: produção municipal registrada no SISAB.
+- **Produção ambulatorial**: quantidade e valor aprovado no SIA/SUS.
+- **Perfil integrado**: agrupamento municipal por estrutura, gasto e indicadores de contexto.
 
 # Métodos
 
-1. Padronização dos códigos municipais.
-2. Consolidação das bases por município.
-3. Cálculo de indicadores por habitante e por 10 mil habitantes.
-4. Estatística descritiva estadual.
-5. Rankings exploratórios.
-6. Agrupamento municipal por estrutura, gasto e indicadores de contexto.
-7. Mapas coropléticos para leitura territorial.
-8. Dashboard interativo para comunicação dos resultados.
+O projeto segue um fluxo simples:
+
+1. consolidação das bases finais por município;
+2. padronização de códigos municipais;
+3. cálculo de indicadores por habitante e por 10 mil habitantes;
+4. análise descritiva estadual;
+5. rankings exploratórios;
+6. análise de perfis municipais;
+7. mapas coropléticos;
+8. dashboard interativo.
 
 # Resultados descritivos
 
-| Indicador | Resultado |
-| --- | --- |
-| Municípios analisados | 79 |
-| População coberta | 2.901.895 |
-| Estabelecimentos CNES | 6.529 |
-| Leitos SUS | 4.618 |
-| Equipamentos registrados | 42.143 |
-| Produção ambulatorial aprovada | 55.366.170 |
-| Valor ambulatorial aprovado | R$ 367.450.965 |
-| Produção APS SISAB 2025 | 36.102.693 |
-| Gasto em saúde per capita mediano | R$ 2.258 |
-| Leitos SUS por 10 mil habitantes (mediana) | 13 |
+```{r resultados-descritivos}
+summary_cols <- c(
+  "population_2024",
+  "facilities",
+  "sus_beds",
+  "existing_equipment",
+  "health_spending_per_capita",
+  "outpatient_value_per_capita_brl",
+  "primary_care_production_per_1000"
+)
+
+estatisticas <- data.frame(
+  indicador = summary_cols,
+  media = sapply(municipios[summary_cols], mean, na.rm = TRUE),
+  mediana = sapply(municipios[summary_cols], median, na.rm = TRUE),
+  minimo = sapply(municipios[summary_cols], min, na.rm = TRUE),
+  maximo = sapply(municipios[summary_cols], max, na.rm = TRUE)
+)
+
+knitr::kable(estatisticas, digits = 2)
+```
 
 # Análise exploratória
 
 ## Perfis municipais integrados
 
-| Perfil | Municípios | Gasto per capita | Leitos SUS/10 mil | Síntese |
-| --- | --- | --- | --- | --- |
-| Cluster 1 | 9 | R$ 3.498 | 24,3 | Small municipalities with high local capacity |
-| Cluster 2 | 6 | R$ 2.465 | 9,5 | High spending and outcome-alert profile |
-| Cluster 3 | 31 | R$ 2.007 | 15,1 | Regional hubs and dense network |
-| Cluster 4 | 33 | R$ 2.153 | 9,3 | Lower-density structure |
+```{r perfis}
+knitr::kable(perfis)
+```
 
 Os agrupamentos organizam os municípios em perfis úteis para leitura profissional: municípios pequenos com capacidade local elevada, perfis de maior gasto e alerta, polos regionais de rede mais densa e municípios com menor densidade estrutural.
 
-## Maiores gastos per capita
+## Rankings
 
-| Município | Gasto per capita | Perfil |
-| --- | --- | --- |
-| Inocência - MS | R$ 4.647 | Small municipalities with high local capacity |
-| Jateí - MS | R$ 4.566 | Small municipalities with high local capacity |
-| Taquarussu - MS | R$ 4.389 | Small municipalities with high local capacity |
-| São Gabriel do Oeste - MS | R$ 4.270 | Regional hubs and dense network |
-| Alcinópolis - MS | R$ 4.253 | Small municipalities with high local capacity |
-| Porto Murtinho - MS | R$ 3.839 | Lower-density structure |
-| Paraíso das Águas - MS | R$ 3.730 | Lower-density structure |
-| Vicentina - MS | R$ 3.575 | High spending and outcome-alert profile |
+```{r rankings}
+ranking_gasto <- top_n(municipios, "health_spending_per_capita", 8)[, c("municipality_name", "health_spending_per_capita", "cluster_label")]
+ranking_amb <- top_n(municipios, "outpatient_value_per_capita_brl", 8)[, c("municipality_name", "outpatient_value_per_capita_brl", "outpatient_approved_quantity")]
+ranking_aps <- top_n(municipios, "primary_care_production_per_1000", 8)[, c("municipality_name", "primary_care_production_per_1000", "primary_care_total_production_2025")]
 
-## Maiores valores ambulatoriais per capita
-
-| Município | Valor ambulatorial per capita | Quantidade aprovada |
-| --- | --- | --- |
-| Campo Grande - MS | R$ 221 | 31.109.887 |
-| Santa Rita do Pardo - MS | R$ 193 | 264.190 |
-| Coxim - MS | R$ 169 | 808.725 |
-| Cassilândia - MS | R$ 165 | 1.450.572 |
-| Costa Rica - MS | R$ 161 | 300.604 |
-| Paranaíba - MS | R$ 145 | 1.472.667 |
-| Aquidauana - MS | R$ 140 | 1.031.696 |
-| Três Lagoas - MS | R$ 134 | 1.774.781 |
-
-## Maiores produções de APS por mil habitantes
-
-| Município | Produção APS por mil hab. | Produção total |
-| --- | --- | --- |
-| Jateí - MS | 26.635,4 | 96.420 |
-| Deodápolis - MS | 25.239,9 | 358.659 |
-| Caracol - MS | 24.733,3 | 126.511 |
-| Batayporã - MS | 24.132,3 | 264.321 |
-| Inocência - MS | 23.815,8 | 207.483 |
-| Taquarussu - MS | 23.595,4 | 88.011 |
-| Novo Horizonte do Sul - MS | 23.102,5 | 111.146 |
-| Eldorado - MS | 22.928,7 | 266.730 |
+knitr::kable(ranking_gasto, digits = 2, caption = "Maiores gastos em saúde per capita")
+knitr::kable(ranking_amb, digits = 2, caption = "Maiores valores ambulatoriais per capita")
+knitr::kable(ranking_aps, digits = 2, caption = "Maiores produções de APS por mil habitantes")
+```
 
 # Análise geoespacial
 
-A análise geoespacial mostra a distribuição dos indicadores no território. A interpretação é exploratória: mapas ajudam a localizar padrões, contrastes e hipóteses de investigação.
+A análise geoespacial mostra a distribuição territorial dos indicadores. Ela é exploratória: mapas ajudam a localizar padrões, contrastes e hipóteses de investigação, mas não explicam causalidade sozinhos.
 
-![Perfis municipais integrados](figures/01_mapa_perfis_municipais.svg)
+![Perfis municipais integrados](figures/01_mapa_perfis_municipais.png)
 
-![Gasto em saúde per capita](figures/02_mapa_gasto_per_capita.svg)
+![Gasto em saúde per capita](figures/02_mapa_gasto_per_capita.png)
 
-![Leitos SUS por 10 mil habitantes](figures/03_mapa_leitos_sus.svg)
+![Leitos SUS por 10 mil habitantes](figures/03_mapa_leitos_sus.png)
 
-![Valor ambulatorial aprovado per capita](figures/04_mapa_producao_ambulatorial.svg)
+![Valor ambulatorial aprovado per capita](figures/04_mapa_producao_ambulatorial.png)
 
 # Dashboard interativo
 
@@ -122,11 +132,13 @@ O dashboard em `docs/rede_sus_dashboard.html` facilita a leitura por município,
 
 # Resultados gerados
 
-- `data/municipios_rede_sus.csv`: base municipal consolidada.
-- `data/resumo_indicadores.csv`: indicadores executivos.
-- `data/perfis_municipais.csv`: síntese dos clusters.
-- `figures/`: mapas e rankings.
-- `docs/rede_sus_dashboard.html`: painel interativo.
+- `data/municipios_rede_sus.csv`
+- `data/resumo_indicadores.csv`
+- `data/perfis_municipais.csv`
+- `figures/*.png`
+- `docs/rede_sus_dashboard.html`
+- `docs/relatorio.html`
+- `rede_financiamento_producao_sus.pdf`
 
 # Limitações
 
