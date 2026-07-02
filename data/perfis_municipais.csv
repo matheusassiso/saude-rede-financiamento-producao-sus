@@ -1,0 +1,5 @@
+cluster,municipalities,population_2024,median_population,facilities_per_10k,sus_beds_per_10k,equipment_per_10k,health_spending_per_capita,personnel_spending_share_health_spending,investment_share_health_spending,health_transfer_share_health_spending,own_revenue_applied_asps_lc141,infant_mortality_rate,neonatal_mortality_rate,maternal_mortality_ratio,cluster_label
+Cluster 1,9,48615,48615,24.265300620113237,24.265300620113237,86.02150537634408,3497.8,45.260000000000005,3.34,21.68,19.35,14.705882352941176,12.658227848101266,0,Small municipalities with high local capacity
+Cluster 2,6,53176,53176,14.218634777687722,9.542458148572385,45.159274098811146,2464.665,39.8,13.085,48.865,20.89,28.370221327967805,25.409373235460194,613.4969325153374,High spending and outcome-alert profile
+Cluster 3,31,2340839,2340839,27.912014664222628,15.09277618300731,107.38752082947603,2007.48,49.32,2.69,43.43,23.110000000000003,14.814814814814817,8.064516129032258,0,Regional hubs and dense network
+Cluster 4,33,459265,459265,16.951067917278788,9.29054054054054,60.046536065450724,2152.77,48.43,3.5,32.05,23.86,9.925558312655086,0,0,Lower-density structure

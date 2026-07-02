@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Matheus Assis de Oliveira" />
+  <meta name="dcterms.date" content="2026-07-02" />
+  <title>Rede, Financiamento e Produção SUS em Mato Grosso do Sul</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Rede, Financiamento e Produção SUS em Mato Grosso do
+Sul</h1>
+<p class="author">Matheus Assis de Oliveira</p>
+<p class="date">2026-07-02</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introdução" id="toc-introdução">Introdução</a></li>
+<li><a href="#motivação" id="toc-motivação">Motivação</a></li>
+<li><a href="#dados" id="toc-dados">Dados</a></li>
+<li><a href="#métodos" id="toc-métodos">Métodos</a></li>
+<li><a href="#resultados-descritivos"
+id="toc-resultados-descritivos">Resultados descritivos</a></li>
+<li><a href="#análise-exploratória"
+id="toc-análise-exploratória">Análise exploratória</a>
+<ul>
+<li><a href="#perfis-municipais-integrados"
+id="toc-perfis-municipais-integrados">Perfis municipais
+integrados</a></li>
+<li><a href="#maiores-gastos-per-capita"
+id="toc-maiores-gastos-per-capita">Maiores gastos per capita</a></li>
+<li><a href="#maiores-valores-ambulatoriais-per-capita"
+id="toc-maiores-valores-ambulatoriais-per-capita">Maiores valores
+ambulatoriais per capita</a></li>
+<li><a href="#maiores-produções-de-aps-por-mil-habitantes"
+id="toc-maiores-produções-de-aps-por-mil-habitantes">Maiores produções
+de APS por mil habitantes</a></li>
+</ul></li>
+<li><a href="#análise-geoespacial" id="toc-análise-geoespacial">Análise
+geoespacial</a></li>
+<li><a href="#dashboard-interativo"
+id="toc-dashboard-interativo">Dashboard interativo</a></li>
+<li><a href="#resultados-gerados" id="toc-resultados-gerados">Resultados
+gerados</a></li>
+<li><a href="#limitações" id="toc-limitações">Limitações</a></li>
+</ul>
+</nav>
+<h1 id="introdução">Introdução</h1>
+<p>Este repositório apresenta um projeto único de análise aplicada sobre
+rede assistencial, financiamento municipal e produção do SUS em Mato
+Grosso do Sul. A proposta não é empilhar estudos isolados, mas organizar
+cinco dimensões analíticas em uma sequência única: estrutura da rede,
+orçamento, atenção primária, produção ambulatorial e perfis municipais
+integrados.</p>
+<p>A pergunta central é: <strong>como estrutura assistencial,
+financiamento e produção do SUS se distribuem entre os municípios, e
+quais perfis territoriais aparecem quando essas dimensões são analisadas
+em conjunto?</strong></p>
+<h1 id="motivação">Motivação</h1>
+<p>A análise isolada de bases públicas cria uma leitura fragmentada. Um
+município pode ter alta despesa per capita por escala populacional,
+produção ambulatorial concentrada por papel regional, ou estrutura
+física proporcionalmente elevada sem ser um polo populacional. A
+integração permite observar essas relações em uma linguagem útil para
+gestão, auditoria exploratória e portfólio profissional de análise de
+dados.</p>
+<h1 id="dados">Dados</h1>
+<p>Foram integradas cinco dimensões: CNES, SIOPS, SISAB, SIA/SUS e
+matriz municipal de agrupamento. Todas foram reduzidas à unidade
+municipal para permitir comparação, cálculo de taxas e leitura
+geoespacial.</p>
+<h1 id="métodos">Métodos</h1>
+<ol type="1">
+<li>Padronização dos códigos municipais.</li>
+<li>Consolidação das bases por município.</li>
+<li>Cálculo de indicadores por habitante e por 10 mil habitantes.</li>
+<li>Estatística descritiva estadual.</li>
+<li>Rankings exploratórios.</li>
+<li>Agrupamento municipal por estrutura, gasto e indicadores de
+contexto.</li>
+<li>Mapas coropléticos para leitura territorial.</li>
+<li>Dashboard interativo para comunicação dos resultados.</li>
+</ol>
+<h1 id="resultados-descritivos">Resultados descritivos</h1>
+<table>
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Municípios analisados</td>
+<td>79</td>
+</tr>
+<tr>
+<td>População coberta</td>
+<td>2.901.895</td>
+</tr>
+<tr>
+<td>Estabelecimentos CNES</td>
+<td>6.529</td>
+</tr>
+<tr>
+<td>Leitos SUS</td>
+<td>4.618</td>
+</tr>
+<tr>
+<td>Equipamentos registrados</td>
+<td>42.143</td>
+</tr>
+<tr>
+<td>Produção ambulatorial aprovada</td>
+<td>55.366.170</td>
+</tr>
+<tr>
+<td>Valor ambulatorial aprovado</td>
+<td>R$ 367.450.965</td>
+</tr>
+<tr>
+<td>Produção APS SISAB 2025</td>
+<td>36.102.693</td>
+</tr>
+<tr>
+<td>Gasto em saúde per capita mediano</td>
+<td>R$ 2.258</td>
+</tr>
+<tr>
+<td>Leitos SUS por 10 mil habitantes (mediana)</td>
+<td>13</td>
+</tr>
+</tbody>
+</table>
+<h1 id="análise-exploratória">Análise exploratória</h1>
+<h2 id="perfis-municipais-integrados">Perfis municipais integrados</h2>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Perfil</th>
+<th>Municípios</th>
+<th>Gasto per capita</th>
+<th>Leitos SUS/10 mil</th>
+<th>Síntese</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster 1</td>
+<td>9</td>
+<td>R$ 3.498</td>
+<td>24,3</td>
+<td>Small municipalities with high local capacity</td>
+</tr>
+<tr>
+<td>Cluster 2</td>
+<td>6</td>
+<td>R$ 2.465</td>
+<td>9,5</td>
+<td>High spending and outcome-alert profile</td>
+</tr>
+<tr>
+<td>Cluster 3</td>
+<td>31</td>
+<td>R$ 2.007</td>
+<td>15,1</td>
+<td>Regional hubs and dense network</td>
+</tr>
+<tr>
+<td>Cluster 4</td>
+<td>33</td>
+<td>R$ 2.153</td>
+<td>9,3</td>
+<td>Lower-density structure</td>
+</tr>
+</tbody>
+</table>
+<p>Os agrupamentos organizam os municípios em perfis úteis para leitura
+profissional: municípios pequenos com capacidade local elevada, perfis
+de maior gasto e alerta, polos regionais de rede mais densa e municípios
+com menor densidade estrutural.</p>
+<h2 id="maiores-gastos-per-capita">Maiores gastos per capita</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Município</th>
+<th>Gasto per capita</th>
+<th>Perfil</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inocência - MS</td>
+<td>R$ 4.647</td>
+<td>Small municipalities with high local capacity</td>
+</tr>
+<tr>
+<td>Jateí - MS</td>
+<td>R$ 4.566</td>
+<td>Small municipalities with high local capacity</td>
+</tr>
+<tr>
+<td>Taquarussu - MS</td>
+<td>R$ 4.389</td>
+<td>Small municipalities with high local capacity</td>
+</tr>
+<tr>
+<td>São Gabriel do Oeste - MS</td>
+<td>R$ 4.270</td>
+<td>Regional hubs and dense network</td>
+</tr>
+<tr>
+<td>Alcinópolis - MS</td>
+<td>R$ 4.253</td>
+<td>Small municipalities with high local capacity</td>
+</tr>
+<tr>
+<td>Porto Murtinho - MS</td>
+<td>R$ 3.839</td>
+<td>Lower-density structure</td>
+</tr>
+<tr>
+<td>Paraíso das Águas - MS</td>
+<td>R$ 3.730</td>
+<td>Lower-density structure</td>
+</tr>
+<tr>
+<td>Vicentina - MS</td>
+<td>R$ 3.575</td>
+<td>High spending and outcome-alert profile</td>
+</tr>
+</tbody>
+</table>
+<h2 id="maiores-valores-ambulatoriais-per-capita">Maiores valores
+ambulatoriais per capita</h2>
+<table>
+<thead>
+<tr>
+<th>Município</th>
+<th>Valor ambulatorial per capita</th>
+<th>Quantidade aprovada</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Campo Grande - MS</td>
+<td>R$ 221</td>
+<td>31.109.887</td>
+</tr>
+<tr>
+<td>Santa Rita do Pardo - MS</td>
+<td>R$ 193</td>
+<td>264.190</td>
+</tr>
+<tr>
+<td>Coxim - MS</td>
+<td>R$ 169</td>
+<td>808.725</td>
+</tr>
+<tr>
+<td>Cassilândia - MS</td>
+<td>R$ 165</td>
+<td>1.450.572</td>
+</tr>
+<tr>
+<td>Costa Rica - MS</td>
+<td>R$ 161</td>
+<td>300.604</td>
+</tr>
+<tr>
+<td>Paranaíba - MS</td>
+<td>R$ 145</td>
+<td>1.472.667</td>
+</tr>
+<tr>
+<td>Aquidauana - MS</td>
+<td>R$ 140</td>
+<td>1.031.696</td>
+</tr>
+<tr>
+<td>Três Lagoas - MS</td>
+<td>R$ 134</td>
+<td>1.774.781</td>
+</tr>
+</tbody>
+</table>
+<h2 id="maiores-produções-de-aps-por-mil-habitantes">Maiores produções
+de APS por mil habitantes</h2>
+<table>
+<thead>
+<tr>
+<th>Município</th>
+<th>Produção APS por mil hab.</th>
+<th>Produção total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jateí - MS</td>
+<td>26.635,4</td>
+<td>96.420</td>
+</tr>
+<tr>
+<td>Deodápolis - MS</td>
+<td>25.239,9</td>
+<td>358.659</td>
+</tr>
+<tr>
+<td>Caracol - MS</td>
+<td>24.733,3</td>
+<td>126.511</td>
+</tr>
+<tr>
+<td>Batayporã - MS</td>
+<td>24.132,3</td>
+<td>264.321</td>
+</tr>
+<tr>
+<td>Inocência - MS</td>
+<td>23.815,8</td>
+<td>207.483</td>
+</tr>
+<tr>
+<td>Taquarussu - MS</td>
+<td>23.595,4</td>
+<td>88.011</td>
+</tr>
+<tr>
+<td>Novo Horizonte do Sul - MS</td>
+<td>23.102,5</td>
+<td>111.146</td>
+</tr>
+<tr>
+<td>Eldorado - MS</td>
+<td>22.928,7</td>
+<td>266.730</td>
+</tr>
+</tbody>
+</table>
+<h1 id="análise-geoespacial">Análise geoespacial</h1>
+<p>A análise geoespacial mostra a distribuição dos indicadores no
+território. A interpretação é exploratória: mapas ajudam a localizar
+padrões, contrastes e hipóteses de investigação.</p>
+<figure>
+<img src="figures/01_mapa_perfis_municipais.svg"
+alt="Perfis municipais integrados" />
+<figcaption aria-hidden="true">Perfis municipais integrados</figcaption>
+</figure>
+<figure>
+<img src="figures/02_mapa_gasto_per_capita.svg"
+alt="Gasto em saúde per capita" />
+<figcaption aria-hidden="true">Gasto em saúde per capita</figcaption>
+</figure>
+<figure>
+<img src="figures/03_mapa_leitos_sus.svg"
+alt="Leitos SUS por 10 mil habitantes" />
+<figcaption aria-hidden="true">Leitos SUS por 10 mil
+habitantes</figcaption>
+</figure>
+<figure>
+<img src="figures/04_mapa_producao_ambulatorial.svg"
+alt="Valor ambulatorial aprovado per capita" />
+<figcaption aria-hidden="true">Valor ambulatorial aprovado per
+capita</figcaption>
+</figure>
+<h1 id="dashboard-interativo">Dashboard interativo</h1>
+<p>O dashboard em <code>docs/rede_sus_dashboard.html</code> facilita a
+leitura por município, indicador e perfil. Ele foi pensado para
+avaliação profissional rápida: mapa, indicadores executivos, ranking e
+acesso às bases finais.</p>
+<h1 id="resultados-gerados">Resultados gerados</h1>
+<ul>
+<li><code>data/municipios_rede_sus.csv</code>: base municipal
+consolidada.</li>
+<li><code>data/resumo_indicadores.csv</code>: indicadores
+executivos.</li>
+<li><code>data/perfis_municipais.csv</code>: síntese dos clusters.</li>
+<li><code>figures/</code>: mapas e rankings.</li>
+<li><code>docs/rede_sus_dashboard.html</code>: painel interativo.</li>
+</ul>
+<h1 id="limitações">Limitações</h1>
+<p>Os dados são administrativos e podem ter atraso, revisão e diferenças
+de cobertura. Indicadores per capita podem supervalorizar municípios
+pequenos. Mapas e clusters apontam padrões, mas não explicam
+causalidade. A leitura final precisa considerar escala populacional,
+papel regional dos serviços e validação institucional.</p>
+</body>
+</html>
