@@ -1,4 +1,9 @@
+*.R linguist-language=R
+*.Rmd linguist-language=RMarkdown
+scripts/*.R linguist-language=R
+R/*.R linguist-language=R
 docs/*.html linguist-generated=true
+docs/** linguist-generated=true
 docs/data/*.geojson linguist-generated=true
 data/*.geojson linguist-generated=true
 data/*.csv linguist-generated=true
