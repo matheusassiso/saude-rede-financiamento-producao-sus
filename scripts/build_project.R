@@ -3,6 +3,8 @@ source("R/code.R")
 dir.create("figures", showWarnings = FALSE)
 dir.create("docs", showWarnings = FALSE)
 dir.create("docs/data", recursive = TRUE, showWarnings = FALSE)
+dir.create("docs/figures", recursive = TRUE, showWarnings = FALSE)
+invisible(file.create("docs/.nojekyll"))
 
 stopifnot(requireNamespace("jsonlite", quietly = TRUE))
 stopifnot(requireNamespace("rmarkdown", quietly = TRUE))
@@ -94,6 +96,7 @@ plot_map("sus_beds_per_10k", "Leitos SUS por 10 mil habitantes", "03_mapa_leitos
 plot_map("outpatient_value_per_capita_brl", "Valor ambulatorial aprovado per capita", "04_mapa_producao_ambulatorial.png")
 plot_bar(municipios, "health_spending_per_capita", "Maiores gastos em saude per capita", "05_ranking_gasto_per_capita.png", fmt_money)
 plot_bar(municipios, "primary_care_production_per_1000", "Maior producao APS por mil habitantes", "06_ranking_aps.png", function(x) fmt_num(x, 1))
+invisible(file.copy(list.files("figures", full.names = TRUE, pattern = "\\.png$"), "docs/figures", overwrite = TRUE))
 
 dashboard <- paste0('<!doctype html>
 <html lang="pt-BR">
@@ -112,6 +115,7 @@ dashboard <- paste0('<!doctype html>
     section{margin:24px 0}.layout{display:grid;grid-template-columns:330px 1fr;gap:14px}.panel{padding:16px}#map{height:620px;border:1px solid var(--line);border-radius:8px;background:#e8eee9}
     select{width:100%;min-height:38px;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;font:inherit;margin-bottom:8px}
     table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}th{background:#eef3ef}
+    .figures{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}.figures figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px}.figures img{display:block;max-width:100%;height:auto}.figures figcaption{font-weight:700;margin-top:8px}
     .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.links a{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;font-size:14px}footer{color:var(--muted);font-size:13px;padding:8px 0 30px}
     @media(max-width:900px){.layout,.metrics{grid-template-columns:1fr}#map{height:480px}}
   </style>
@@ -123,18 +127,26 @@ dashboard <- paste0('<!doctype html>
   <main><section class="layout"><aside class="panel"><h2>Mapa municipal</h2><select id="metric"></select><p id="status">Carregando mapa...</p><div class="links"><a href="../rede_financiamento_producao_sus.pdf">PDF</a><a href="../rede_financiamento_producao_sus.Rmd">Rmd</a><a href="../data/municipios_rede_sus.csv">Dados</a></div></aside><div id="map"></div></section>
   <section><h2>Perfis municipais</h2><table><thead><tr><th>Perfil</th><th>Municipios</th><th>Gasto per capita</th><th>Leitos SUS/10 mil</th><th>Sintese</th></tr></thead><tbody>',
   paste(sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>", perfis$cluster, fmt_num(perfis$municipalities), fmt_money(perfis$health_spending_per_capita), fmt_num(perfis$sus_beds_per_10k, 1), perfis$cluster_label), collapse = ""),
-  '</tbody></table></section></main><footer>Analise exploratoria com bases publicas. Mapas e rankings apoiam leitura profissional; nao substituem validacao institucional.</footer>
+  '</tbody></table></section><section><h2>Mostras visuais da analise</h2><div class="figures">
+  <figure><img src="figures/01_mapa_perfis_municipais.png" alt="Mapa de perfis municipais"><figcaption>Perfis municipais integrados</figcaption></figure>
+  <figure><img src="figures/02_mapa_gasto_per_capita.png" alt="Mapa de gasto per capita"><figcaption>Gasto em saude per capita</figcaption></figure>
+  <figure><img src="figures/03_mapa_leitos_sus.png" alt="Mapa de leitos SUS"><figcaption>Leitos SUS por 10 mil habitantes</figcaption></figure>
+  <figure><img src="figures/04_mapa_producao_ambulatorial.png" alt="Mapa de producao ambulatorial"><figcaption>Producao ambulatorial per capita</figcaption></figure>
+  <figure><img src="figures/05_ranking_gasto_per_capita.png" alt="Ranking de gasto per capita"><figcaption>Ranking de gasto per capita</figcaption></figure>
+  <figure><img src="figures/06_ranking_aps.png" alt="Ranking de APS"><figcaption>Ranking de producao APS</figcaption></figure>
+  </div></section></main><footer>Analise exploratoria com bases publicas. Mapas e rankings apoiam leitura profissional; nao substituem validacao institucional.</footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const metrics=[["cluster","Perfil municipal"],["health_spending_per_capita","Gasto per capita"],["sus_beds_per_10k","Leitos SUS/10 mil"],["facilities_per_10k","Estabelecimentos/10 mil"],["equipment_per_10k","Equipamentos/10 mil"],["outpatient_value_per_capita_brl","Valor ambulatorial per capita"]];
     const sel=document.querySelector("#metric"),status=document.querySelector("#status"); sel.innerHTML=metrics.map(([id,label])=>`<option value="${id}">${label}</option>`).join("");
-    const map=L.map("map",{scrollWheelZoom:false}).setView([-20.6,-54.6],6); L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"&copy; OpenStreetMap"}).addTo(map); let layer; sel.addEventListener("change",draw); draw();
+    const map=L.map("map",{scrollWheelZoom:false,minZoom:6,maxBoundsViscosity:1}).setView([-20.6,-54.6],6); let layer; sel.addEventListener("change",draw); draw();
     function f(value){return Number.isFinite(value)?new Intl.NumberFormat("pt-BR",{maximumFractionDigits:value>100?0:2}).format(value):"sem dado"}
     function color(raw,min,max){const cluster={"Cluster 1":"#1f8a5b","Cluster 2":"#b44a3f","Cluster 3":"#256f9c","Cluster 4":"#af7a20"}; if(cluster[raw])return cluster[raw]; const value=Number(raw); if(!Number.isFinite(value))return "#d6ddd8"; const t=Math.max(0,Math.min(1,(value-min)/((max-min)||1))); return ["#d9efc2","#9bd18c","#4fa66c","#277f62","#15524d"][Math.min(4,Math.floor(t*5))]}
-    async function draw(){const metric=sel.value||metrics[0][0],label=metrics.find(([id])=>id===metric)?.[1]||metric,data=await fetch("data/ms_rede_sus.geojson").then(r=>r.json()),vals=data.features.map(feat=>Number(feat.properties?.[metric])).filter(Number.isFinite),min=Math.min(...vals),max=Math.max(...vals); if(layer)layer.remove(); layer=L.geoJSON(data,{style:feat=>({fillColor:color(feat.properties?.[metric],min,max),fillOpacity:.82,color:"#fff",weight:.8}),onEachFeature:(feat,item)=>{const p=feat.properties||{},raw=p[metric]; item.bindPopup("<strong>"+(p.municipality_name||"Municipio")+"</strong><br>"+label+": "+(Number.isFinite(Number(raw))?f(Number(raw)):raw))}}).addTo(map); map.fitBounds(layer.getBounds(),{padding:[18,18]}); status.textContent=data.features.length+" municipios — "+label+"."}
+    async function draw(){const metric=sel.value||metrics[0][0],label=metrics.find(([id])=>id===metric)?.[1]||metric,data=await fetch("data/ms_rede_sus.geojson").then(r=>r.json()),vals=data.features.map(feat=>Number(feat.properties?.[metric])).filter(Number.isFinite),min=Math.min(...vals),max=Math.max(...vals); if(layer)layer.remove(); layer=L.geoJSON(data,{style:feat=>({fillColor:color(feat.properties?.[metric],min,max),fillOpacity:.82,color:"#fff",weight:.8}),onEachFeature:(feat,item)=>{const p=feat.properties||{},raw=p[metric]; item.bindPopup("<strong>"+(p.municipality_name||"Municipio")+"</strong><br>"+label+": "+(Number.isFinite(Number(raw))?f(Number(raw)):raw))}}).addTo(map); const bounds=layer.getBounds(); map.setMaxBounds(bounds.pad(.12)); map.fitBounds(bounds,{padding:[18,18]}); status.textContent=data.features.length+" municipios — "+label+"."}
   </script></body></html>')
 
 writeLines(dashboard, "docs/rede_sus_dashboard.html", useBytes = TRUE)
+file.copy("docs/rede_sus_dashboard.html", "docs/index.html", overwrite = TRUE)
 
 rmarkdown::render("rede_financiamento_producao_sus.Rmd", output_format = "html_document", output_file = "relatorio.html", output_dir = "docs", quiet = TRUE)
 

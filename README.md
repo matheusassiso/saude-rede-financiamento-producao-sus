@@ -12,9 +12,9 @@
 
 ## Dashboard interativo
 
-**[→ Abrir dashboard](docs/rede_sus_dashboard.html)**
+**[Abrir dashboard online](https://matheusassiso.github.io/saude-rede-financiamento-producao-sus/)**
 
-Painel interativo com mapa dos 79 municípios de Mato Grosso do Sul, seleção de indicadores, perfis municipais, resumo executivo e links para dados, Rmd e PDF.
+Painel interativo com mapa limitado aos 79 municípios de Mato Grosso do Sul, seleção de indicadores, perfis municipais, resumo executivo, análise exploratória e links para dados, Rmd e PDF.
 
 ![Perfis municipais integrados](figures/01_mapa_perfis_municipais.png)
 
@@ -148,7 +148,8 @@ Os perfis não são ranking de qualidade. Eles funcionam como uma síntese explo
 - [Relatório PDF](rede_financiamento_producao_sus.pdf)
 - [Relatório RMarkdown](rede_financiamento_producao_sus.Rmd)
 - [Relatório HTML](docs/relatorio.html)
-- [Dashboard interativo](docs/rede_sus_dashboard.html)
+- [Dashboard interativo online](https://matheusassiso.github.io/saude-rede-financiamento-producao-sus/)
+- [Arquivo HTML do dashboard](docs/rede_sus_dashboard.html)
 
 O PDF foi gerado por:
 
@@ -182,6 +183,9 @@ rmarkdown::render(
 │   ├── 05_ranking_gasto_per_capita.png
 │   └── 06_ranking_aps.png
 ├── docs/
+│   ├── index.html
+│   ├── data/
+│   ├── figures/
 │   ├── rede_sus_dashboard.html
 │   └── relatorio.html
 ├── rede_financiamento_producao_sus.Rmd
